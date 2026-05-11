@@ -1,0 +1,15 @@
+apiVersion: 1
+datasources:
+  - name: PostgreSQL
+    type: postgres
+    url: postgres:5432
+    database: iot_db  # <--- This is the main one
+    user: grafana
+    isDefault: true
+    secureJsonData:
+      password: '1234' 
+    jsonData:
+      sslmode: 'disable'
+      postgresVersion: 1600
+      database: iot_db # 🔥 ADD THIS LINE TOO (Force for Builder)
+      searchPath: "iot_clean, iot_raw, public"

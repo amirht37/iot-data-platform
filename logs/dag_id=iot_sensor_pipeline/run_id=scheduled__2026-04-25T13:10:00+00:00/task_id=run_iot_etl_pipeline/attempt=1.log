@@ -1,0 +1,30 @@
+[2026-04-25T13:15:01.332+0000] {local_task_job_runner.py:123} INFO - ::group::Pre task execution logs
+[2026-04-25T13:15:01.343+0000] {taskinstance.py:2614} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: iot_sensor_pipeline.run_iot_etl_pipeline scheduled__2026-04-25T13:10:00+00:00 [queued]>
+[2026-04-25T13:15:01.348+0000] {taskinstance.py:2614} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: iot_sensor_pipeline.run_iot_etl_pipeline scheduled__2026-04-25T13:10:00+00:00 [queued]>
+[2026-04-25T13:15:01.348+0000] {taskinstance.py:2867} INFO - Starting attempt 1 of 2
+[2026-04-25T13:15:01.357+0000] {taskinstance.py:2890} INFO - Executing <Task(PythonOperator): run_iot_etl_pipeline> on 2026-04-25 13:10:00+00:00
+[2026-04-25T13:15:01.363+0000] {standard_task_runner.py:104} INFO - Running: ['***', 'tasks', 'run', 'iot_sensor_pipeline', 'run_iot_etl_pipeline', 'scheduled__2026-04-25T13:10:00+00:00', '--job-id', '437', '--raw', '--subdir', 'DAGS_FOLDER/iot_dag.py', '--cfg-path', '/tmp/tmprcu3iob5']
+[2026-04-25T13:15:01.365+0000] {standard_task_runner.py:105} INFO - Job 437: Subtask run_iot_etl_pipeline
+[2026-04-25T13:15:01.366+0000] {logging_mixin.py:190} WARNING - /home/***/.local/lib/python3.12/site-packages/***/task/task_runner/standard_task_runner.py:70 DeprecationWarning: This process (pid=1985) is multi-threaded, use of fork() may lead to deadlocks in the child.
+[2026-04-25T13:15:01.366+0000] {standard_task_runner.py:72} INFO - Started process 1987 to run task
+[2026-04-25T13:15:01.405+0000] {task_command.py:467} INFO - Running <TaskInstance: iot_sensor_pipeline.run_iot_etl_pipeline scheduled__2026-04-25T13:10:00+00:00 [running]> on host 0471fb5f5ee0
+[2026-04-25T13:15:01.465+0000] {taskinstance.py:3134} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='amrire' AIRFLOW_CTX_DAG_ID='iot_sensor_pipeline' AIRFLOW_CTX_TASK_ID='run_iot_etl_pipeline' AIRFLOW_CTX_EXECUTION_DATE='2026-04-25T13:10:00+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='scheduled__2026-04-25T13:10:00+00:00'
+[2026-04-25T13:15:01.466+0000] {taskinstance.py:732} INFO - ::endgroup::
+[2026-04-25T13:15:01.484+0000] {pipeline.py:25} INFO - Pipeline run 338 started
+[2026-04-25T13:15:01.484+0000] {extract.py:8} INFO - Extract started
+[2026-04-25T13:15:01.489+0000] {extract.py:43} INFO - Extract completed | rows=51 | runtime=0.00s
+[2026-04-25T13:15:01.491+0000] {transform.py:7} INFO - Transform started
+[2026-04-25T13:15:01.500+0000] {transform.py:81} INFO - Transform completed | clean_rows=51 | quarantined_rows=0 | runtime=0.01s
+[2026-04-25T13:15:01.500+0000] {logging_mixin.py:190} INFO - DEBUG - CLEAN COLS: ['raw_id', 'run_id', 'device_id', 'event_ts_ms', 'event_ts', 'temperature', 'humidity', 'source', 'ingest_ts']
+[2026-04-25T13:15:01.501+0000] {logging_mixin.py:190} INFO - DEBUG - NULL COUNT: 0
+[2026-04-25T13:15:01.501+0000] {load.py:10} INFO - Load started for Run ID: 338
+[2026-04-25T13:15:01.510+0000] {load.py:39} INFO - Loaded 51 clean records.
+[2026-04-25T13:15:01.512+0000] {load.py:62} INFO - Watermark updated to ID: 8741.
+[2026-04-25T13:15:01.513+0000] {load.py:69} INFO - Load completed | runtime=0.01s
+[2026-04-25T13:15:01.515+0000] {pipeline.py:51} INFO - Pipeline run 338 completed successfully
+[2026-04-25T13:15:01.515+0000] {python.py:240} INFO - Done. Returned value was: None
+[2026-04-25T13:15:01.523+0000] {taskinstance.py:341} INFO - ::group::Post task execution logs
+[2026-04-25T13:15:01.523+0000] {taskinstance.py:353} INFO - Marking task as SUCCESS. dag_id=iot_sensor_pipeline, task_id=run_iot_etl_pipeline, run_id=scheduled__2026-04-25T13:10:00+00:00, execution_date=20260425T131000, start_date=20260425T131501, end_date=20260425T131501
+[2026-04-25T13:15:01.580+0000] {local_task_job_runner.py:266} INFO - Task exited with return code 0
+[2026-04-25T13:15:01.600+0000] {taskinstance.py:3901} INFO - 0 downstream tasks scheduled from follow-on schedule check
+[2026-04-25T13:15:01.601+0000] {local_task_job_runner.py:245} INFO - ::endgroup::
