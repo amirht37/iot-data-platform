@@ -56,7 +56,7 @@ services:
   # ==================== 4. THE INGESTOR (Flask) ====================
   flask-ingest:
     build: ./flask
-    container_name: flask_iot
+    container_name: iot-flask
     ports:
       - "5001:5000"
     depends_on:
@@ -64,7 +64,6 @@ services:
         condition: service_healthy
     restart: always
     environment:
-      # These MUST match what you have in your flask/app.py os.getenv calls
       DB_HOST: postgres
       DB_PORT: 5432
       IOT_DB: ${IOT_DB}
@@ -102,6 +101,7 @@ services:
       - "3000:3000"
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASS}
+      - DB_PASSWORD=${DB_PASSWORD}
     volumes:
       - grafana_data:/var/lib/grafana
       - ./dashboards:/etc/grafana/provisioning/dashboards

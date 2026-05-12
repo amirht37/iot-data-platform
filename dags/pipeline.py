@@ -14,7 +14,6 @@ host = os.getenv("DB_HOST", "postgres")
 port = os.getenv("DB_PORT", "5432")
 db_name = os.getenv("IOT_DB", "iot_db")
 
-# Unified Name to match your metadata table exactly
 PIPELINE_NAME = "sensor_etl"
 
 DB_URI = f"postgresql+psycopg2://{user}:{password}@{host}:{port}/{db_name}"

@@ -3,13 +3,13 @@ datasources:
   - name: PostgreSQL
     type: postgres
     url: postgres:5432
-    database: iot_db  # <--- This is the main one
+    database: iot_db  
     user: grafana
     isDefault: true
     secureJsonData:
-      password: '1234' 
+      password: ${DB_PASSWORD} 
     jsonData:
       sslmode: 'disable'
       postgresVersion: 1600
-      database: iot_db # 🔥 ADD THIS LINE TOO (Force for Builder)
+      database: iot_db 
       searchPath: "iot_clean, iot_raw, public"

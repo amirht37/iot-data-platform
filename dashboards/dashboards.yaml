@@ -3,11 +3,11 @@ apiVersion: 1
 providers:
   - name: 'IoT Medallion Dashboards'
     orgId: 1
-    folder: 'Sovereign Infrastructure' # 🔥 This creates a clean folder in the UI
+    folder: 'Infrastructure Dashboards' 
     type: file
     disableDeletion: false
     editable: true
-    updateIntervalSeconds: 100
+      
     options:
       # 🔥 THIS IS THE INTERNAL PATH INSIDE THE CONTAINER
       path: /etc/grafana/provisioning/dashboards

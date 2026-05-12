@@ -17,7 +17,7 @@ with DAG(
     schedule='*/5 * * * *',      
     start_date=datetime(2025, 1, 1),
     catchup=False, 
-    max_active_runs=1,  # 🔥 PREVENTS RACE CONDITIONS: Only 1 run at a time
+    max_active_runs=1, 
     tags=['iot', 'etl', 'sensor'],
 ) as dag:
 
