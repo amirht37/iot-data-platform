@@ -125,20 +125,8 @@ During the initial orchestration phase, I observed a "gap" in the `pipeline_runs
 
 **Outcome:** The pipeline is now Deterministic. Each run must complete and commit its transaction before the next one can boot. This stabilized the `run_id` sequence and eliminated state-collision risks.
 
-
 ---
 
-## 3. Concurrency Control & Run ID Serialization
-
-During the initial orchestration phase, I observed a "gap" in the `pipeline_runs` metadata where `run_id` values would jump non-linearly (e.g., from 51 to 80) despite consistent 5-minute execution intervals.
-
-**The Problem:** Race Conditions. Airflow's default settings were allowing multiple DAG runs to overlap. If one run lagged, the scheduler triggered a second parallel instance. This led to "Handshake Contention" and metadata skipping, as two processes fought for the same watermark.
-
-**The Fix:**
-- Implemented `max_active_runs=1` in the DAG configuration to enforce strict Serial Execution.
-- Set `catchup=False` to prevent the scheduler from triggering a "burst" of historical runs.
-
-**Outcome:** The pipeline is now Deterministic. Each run must complete and commit its transaction before the next one can boot. This stabilized the `run_id` sequence and eliminated state-collision risks.
 ## What I Learned
 
 ### Technical
