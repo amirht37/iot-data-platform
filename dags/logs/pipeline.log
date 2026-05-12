@@ -422,3 +422,85 @@
 2026-05-12 20:32:06,766 | INFO | iot_pipeline | Logger initialized. Log file path: /opt/airflow/dags/logs/pipeline.log
 2026-05-12 20:32:37,347 | INFO | iot_pipeline | Logger initialized. Log file path: /opt/airflow/dags/logs/pipeline.log
 2026-05-12 20:33:08,020 | INFO | iot_pipeline | Logger initialized. Log file path: /opt/airflow/dags/logs/pipeline.log
+2026-05-12 20:33:38,641 | INFO | iot_pipeline | Logger initialized. Log file path: /opt/airflow/dags/logs/pipeline.log
+2026-05-12 20:34:09,267 | INFO | iot_pipeline | Logger initialized. Log file path: /opt/airflow/dags/logs/pipeline.log
+2026-05-12 20:34:39,900 | INFO | iot_pipeline | Logger initialized. Log file path: /opt/airflow/dags/logs/pipeline.log
+2026-05-12 20:35:00,683 | INFO | iot_pipeline | Logger initialized. Log file path: /opt/airflow/dags/logs/pipeline.log
+2026-05-12 20:35:00,946 | INFO | iot_pipeline | --- sensor_etl RUN 20 STARTED ---
+2026-05-12 20:35:00,946 | INFO | iot_pipeline | Extract started
+2026-05-12 20:35:00,952 | INFO | iot_pipeline | Extract completed | rows=51 | runtime=0.01s
+2026-05-12 20:35:00,952 | INFO | iot_pipeline | Transform started
+2026-05-12 20:35:00,967 | INFO | iot_pipeline | Transform completed | clean_rows=51 | quarantined_rows=0 | runtime=0.01s
+2026-05-12 20:35:00,967 | INFO | iot_pipeline | Load started for Run ID: 20
+2026-05-12 20:35:00,987 | INFO | iot_pipeline | Loaded 51 clean records.
+2026-05-12 20:35:00,990 | INFO | iot_pipeline | Watermark updated | ID: 958 | TS: 2026-05-12 20:35:00.750569+00:00
+2026-05-12 20:35:00,991 | INFO | iot_pipeline | Load completed | runtime=0.02s
+2026-05-12 20:35:00,993 | INFO | iot_pipeline | --- sensor_etl RUN 20 COMPLETED SUCCESSFULLY ---
+2026-05-12 20:35:10,503 | INFO | iot_pipeline | Logger initialized. Log file path: /opt/airflow/dags/logs/pipeline.log
+2026-05-12 20:35:41,183 | INFO | iot_pipeline | Logger initialized. Log file path: /opt/airflow/dags/logs/pipeline.log
+2026-05-12 20:36:11,779 | INFO | iot_pipeline | Logger initialized. Log file path: /opt/airflow/dags/logs/pipeline.log
+2026-05-12 20:36:42,390 | INFO | iot_pipeline | Logger initialized. Log file path: /opt/airflow/dags/logs/pipeline.log
+2026-05-12 20:37:13,053 | INFO | iot_pipeline | Logger initialized. Log file path: /opt/airflow/dags/logs/pipeline.log
+2026-05-12 20:37:43,647 | INFO | iot_pipeline | Logger initialized. Log file path: /opt/airflow/dags/logs/pipeline.log
+2026-05-12 20:38:14,253 | INFO | iot_pipeline | Logger initialized. Log file path: /opt/airflow/dags/logs/pipeline.log
+2026-05-12 20:38:44,868 | INFO | iot_pipeline | Logger initialized. Log file path: /opt/airflow/dags/logs/pipeline.log
+2026-05-12 20:39:15,479 | INFO | iot_pipeline | Logger initialized. Log file path: /opt/airflow/dags/logs/pipeline.log
+2026-05-12 20:39:46,076 | INFO | iot_pipeline | Logger initialized. Log file path: /opt/airflow/dags/logs/pipeline.log
+2026-05-12 20:40:00,897 | INFO | iot_pipeline | Logger initialized. Log file path: /opt/airflow/dags/logs/pipeline.log
+2026-05-12 20:40:01,142 | INFO | iot_pipeline | --- sensor_etl RUN 21 STARTED ---
+2026-05-12 20:40:01,143 | INFO | iot_pipeline | Extract started
+2026-05-12 20:40:01,148 | INFO | iot_pipeline | Extract completed | rows=20 | runtime=0.01s
+2026-05-12 20:40:01,149 | INFO | iot_pipeline | Transform started
+2026-05-12 20:40:01,166 | INFO | iot_pipeline | Transform completed | clean_rows=20 | quarantined_rows=0 | runtime=0.02s
+2026-05-12 20:40:01,166 | INFO | iot_pipeline | Load started for Run ID: 21
+2026-05-12 20:40:01,176 | INFO | iot_pipeline | Loaded 20 clean records.
+2026-05-12 20:40:01,180 | INFO | iot_pipeline | Watermark updated | ID: 978 | TS: 2026-05-12 20:39:55.775219+00:00
+2026-05-12 20:40:01,180 | INFO | iot_pipeline | Load completed | runtime=0.01s
+2026-05-12 20:40:01,183 | INFO | iot_pipeline | --- sensor_etl RUN 21 COMPLETED SUCCESSFULLY ---
+2026-05-12 20:40:16,710 | INFO | iot_pipeline | Logger initialized. Log file path: /opt/airflow/dags/logs/pipeline.log
+2026-05-12 20:40:47,371 | INFO | iot_pipeline | Logger initialized. Log file path: /opt/airflow/dags/logs/pipeline.log
+2026-05-12 20:41:17,991 | INFO | iot_pipeline | Logger initialized. Log file path: /opt/airflow/dags/logs/pipeline.log
+2026-05-12 20:41:48,644 | INFO | iot_pipeline | Logger initialized. Log file path: /opt/airflow/dags/logs/pipeline.log
+2026-05-12 20:42:19,274 | INFO | iot_pipeline | Logger initialized. Log file path: /opt/airflow/dags/logs/pipeline.log
+2026-05-12 20:42:49,902 | INFO | iot_pipeline | Logger initialized. Log file path: /opt/airflow/dags/logs/pipeline.log
+2026-05-12 20:43:20,484 | INFO | iot_pipeline | Logger initialized. Log file path: /opt/airflow/dags/logs/pipeline.log
+2026-05-12 20:43:51,097 | INFO | iot_pipeline | Logger initialized. Log file path: /opt/airflow/dags/logs/pipeline.log
+2026-05-12 20:44:21,723 | INFO | iot_pipeline | Logger initialized. Log file path: /opt/airflow/dags/logs/pipeline.log
+2026-05-12 20:44:52,336 | INFO | iot_pipeline | Logger initialized. Log file path: /opt/airflow/dags/logs/pipeline.log
+2026-05-12 20:45:00,900 | INFO | iot_pipeline | Logger initialized. Log file path: /opt/airflow/dags/logs/pipeline.log
+2026-05-12 20:45:01,117 | INFO | iot_pipeline | --- sensor_etl RUN 22 STARTED ---
+2026-05-12 20:45:01,118 | INFO | iot_pipeline | Extract started
+2026-05-12 20:45:01,122 | INFO | iot_pipeline | Extract completed | rows=52 | runtime=0.00s
+2026-05-12 20:45:01,123 | INFO | iot_pipeline | Transform started
+2026-05-12 20:45:01,132 | INFO | iot_pipeline | Transform completed | clean_rows=52 | quarantined_rows=0 | runtime=0.01s
+2026-05-12 20:45:01,133 | INFO | iot_pipeline | Load started for Run ID: 22
+2026-05-12 20:45:01,142 | INFO | iot_pipeline | Loaded 52 clean records.
+2026-05-12 20:45:01,145 | INFO | iot_pipeline | Watermark updated | ID: 1030 | TS: 2026-05-12 20:45:00.177551+00:00
+2026-05-12 20:45:01,145 | INFO | iot_pipeline | Load completed | runtime=0.01s
+2026-05-12 20:45:01,147 | INFO | iot_pipeline | --- sensor_etl RUN 22 COMPLETED SUCCESSFULLY ---
+2026-05-12 20:45:22,938 | INFO | iot_pipeline | Logger initialized. Log file path: /opt/airflow/dags/logs/pipeline.log
+2026-05-12 20:45:53,579 | INFO | iot_pipeline | Logger initialized. Log file path: /opt/airflow/dags/logs/pipeline.log
+2026-05-12 20:46:24,212 | INFO | iot_pipeline | Logger initialized. Log file path: /opt/airflow/dags/logs/pipeline.log
+2026-05-12 20:46:54,809 | INFO | iot_pipeline | Logger initialized. Log file path: /opt/airflow/dags/logs/pipeline.log
+2026-05-12 20:47:25,460 | INFO | iot_pipeline | Logger initialized. Log file path: /opt/airflow/dags/logs/pipeline.log
+2026-05-12 20:47:56,064 | INFO | iot_pipeline | Logger initialized. Log file path: /opt/airflow/dags/logs/pipeline.log
+2026-05-12 20:48:26,657 | INFO | iot_pipeline | Logger initialized. Log file path: /opt/airflow/dags/logs/pipeline.log
+2026-05-12 20:48:57,264 | INFO | iot_pipeline | Logger initialized. Log file path: /opt/airflow/dags/logs/pipeline.log
+2026-05-12 20:49:27,893 | INFO | iot_pipeline | Logger initialized. Log file path: /opt/airflow/dags/logs/pipeline.log
+2026-05-12 20:49:58,482 | INFO | iot_pipeline | Logger initialized. Log file path: /opt/airflow/dags/logs/pipeline.log
+2026-05-12 20:50:00,980 | INFO | iot_pipeline | Logger initialized. Log file path: /opt/airflow/dags/logs/pipeline.log
+2026-05-12 20:50:01,222 | INFO | iot_pipeline | --- sensor_etl RUN 23 STARTED ---
+2026-05-12 20:50:01,223 | INFO | iot_pipeline | Extract started
+2026-05-12 20:50:01,228 | INFO | iot_pipeline | Extract completed | rows=16 | runtime=0.01s
+2026-05-12 20:50:01,228 | INFO | iot_pipeline | Transform started
+2026-05-12 20:50:01,239 | INFO | iot_pipeline | Transform completed | clean_rows=16 | quarantined_rows=0 | runtime=0.01s
+2026-05-12 20:50:01,239 | INFO | iot_pipeline | Load started for Run ID: 23
+2026-05-12 20:50:01,245 | INFO | iot_pipeline | Loaded 16 clean records.
+2026-05-12 20:50:01,247 | INFO | iot_pipeline | Watermark updated | ID: 1046 | TS: 2026-05-12 20:46:33.804840+00:00
+2026-05-12 20:50:01,248 | INFO | iot_pipeline | Load completed | runtime=0.01s
+2026-05-12 20:50:01,250 | INFO | iot_pipeline | --- sensor_etl RUN 23 COMPLETED SUCCESSFULLY ---
+2026-05-12 20:50:29,088 | INFO | iot_pipeline | Logger initialized. Log file path: /opt/airflow/dags/logs/pipeline.log
+2026-05-12 20:50:59,679 | INFO | iot_pipeline | Logger initialized. Log file path: /opt/airflow/dags/logs/pipeline.log
+2026-05-12 20:51:30,246 | INFO | iot_pipeline | Logger initialized. Log file path: /opt/airflow/dags/logs/pipeline.log
+2026-05-12 20:52:00,844 | INFO | iot_pipeline | Logger initialized. Log file path: /opt/airflow/dags/logs/pipeline.log
+2026-05-12 20:52:31,401 | INFO | iot_pipeline | Logger initialized. Log file path: /opt/airflow/dags/logs/pipeline.log
