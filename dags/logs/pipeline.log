@@ -504,3 +504,19 @@
 2026-05-12 20:51:30,246 | INFO | iot_pipeline | Logger initialized. Log file path: /opt/airflow/dags/logs/pipeline.log
 2026-05-12 20:52:00,844 | INFO | iot_pipeline | Logger initialized. Log file path: /opt/airflow/dags/logs/pipeline.log
 2026-05-12 20:52:31,401 | INFO | iot_pipeline | Logger initialized. Log file path: /opt/airflow/dags/logs/pipeline.log
+2026-05-12 20:53:02,068 | INFO | iot_pipeline | Logger initialized. Log file path: /opt/airflow/dags/logs/pipeline.log
+2026-05-12 20:53:32,713 | INFO | iot_pipeline | Logger initialized. Log file path: /opt/airflow/dags/logs/pipeline.log
+2026-05-12 20:54:03,352 | INFO | iot_pipeline | Logger initialized. Log file path: /opt/airflow/dags/logs/pipeline.log
+2026-05-12 20:54:33,994 | INFO | iot_pipeline | Logger initialized. Log file path: /opt/airflow/dags/logs/pipeline.log
+2026-05-12 20:55:01,275 | INFO | iot_pipeline | Logger initialized. Log file path: /opt/airflow/dags/logs/pipeline.log
+2026-05-12 20:55:01,495 | INFO | iot_pipeline | --- sensor_etl RUN 24 STARTED ---
+2026-05-12 20:55:01,495 | INFO | iot_pipeline | Extract started
+2026-05-12 20:55:01,500 | INFO | iot_pipeline | No new data found.
+2026-05-12 20:55:01,500 | INFO | iot_pipeline | Scan complete: No new data. Exiting.
+2026-05-12 20:55:04,606 | INFO | iot_pipeline | Logger initialized. Log file path: /opt/airflow/dags/logs/pipeline.log
+2026-05-12 20:55:35,203 | INFO | iot_pipeline | Logger initialized. Log file path: /opt/airflow/dags/logs/pipeline.log
+2026-05-12 20:56:05,812 | INFO | iot_pipeline | Logger initialized. Log file path: /opt/airflow/dags/logs/pipeline.log
+2026-05-12 20:56:36,414 | INFO | iot_pipeline | Logger initialized. Log file path: /opt/airflow/dags/logs/pipeline.log
+2026-05-12 20:57:07,074 | INFO | iot_pipeline | Logger initialized. Log file path: /opt/airflow/dags/logs/pipeline.log
+2026-05-12 20:57:37,699 | INFO | iot_pipeline | Logger initialized. Log file path: /opt/airflow/dags/logs/pipeline.log
+2026-05-12 20:58:08,323 | INFO | iot_pipeline | Logger initialized. Log file path: /opt/airflow/dags/logs/pipeline.log
