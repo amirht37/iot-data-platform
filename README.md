@@ -2,8 +2,10 @@
 Containerized IoT data platform with orchestration, ETL, and observability layer
 ## Quick Start
 1. Clone the repo.
-2. Run `docker-compose up -d`.
-3. Access the system:
+2. Create environment file:
+3. bash > cp .env.example .env
+4. Run `docker-compose up -d`.
+5. Access the system:
    - **Grafana:** localhost:3000 (Admin/Admin)
    - **Airflow:** localhost:8080 (admin/Airflow)
    - ⚠️ Default credentials are for local development only. Change before production use.
