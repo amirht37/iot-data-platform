@@ -7,8 +7,8 @@ set -e
 psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "postgres" <<-EOSQL
     DO \$\$
     BEGIN
-        IF NOT EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = '${DB_PASSWORD}') THEN
-            CREATE USER grafana WITH PASSWORD '1234';
+        IF NOT EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = 'grafana') THEN
+            CREATE USER grafana WITH PASSWORD '${DB_PASSWORD}';
         END IF;
     END
     \$\$;
