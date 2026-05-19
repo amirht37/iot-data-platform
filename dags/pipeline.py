@@ -7,7 +7,6 @@ from load import load_data
 from Logger import logger
 
 # 🏛️ INFRASTRUCTURE HANDSHAKE
-# Pulling the Maserati keys directly from the environment (.env)
 user = os.getenv("POSTGRES_USER", "airflow")
 password = os.getenv("POSTGRES_PASSWORD", "airflow")
 host = os.getenv("DB_HOST", "postgres")
