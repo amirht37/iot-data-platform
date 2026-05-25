@@ -16,7 +16,6 @@ COPY . .
 
 EXPOSE 5000
 
-# 🔥 THE UPGRADE: Moving from "Student" to "Architect"
-# We use Gunicorn to handle the "Firehose" of IoT data
+
 CMD ["gunicorn", "--workers", "4", "--bind", "0.0.0.0:5000", "--access-logfile", "-", "--error-logfile", "-", "flask_app:app"]
 
