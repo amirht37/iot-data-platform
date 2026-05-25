@@ -9,7 +9,6 @@ import traceback
 app = Flask(__name__)
 
 # 🏛️ PURE-ENV CONFIGURATION
-# Pulling the 'Maserati Keys' from the .env via Docker environment
 DB_CONFIG = {
     "host": os.getenv("DB_HOST", "postgres"),
     "port": int(os.getenv("DB_PORT", 5432)),
