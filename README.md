@@ -61,7 +61,7 @@ Load testing revealed ingestion spikes causing high disk I/O and slow inserts. V
 
 > ⚠️ Default credentials are for local development only. Change before any production use.
 ## System architecture
-![System Architecture](screenshots/System_architecture.png) 
+![System Architecture](docs/System_architecture.png) 
 
 ## 🔄 Data Flow
 
@@ -109,17 +109,17 @@ Grafana dashboards visualize ingestion throughput, ETL performance, clean vs qua
 ## System Dashboards
 
 ### Observability Dashboard
-![Observability Dashboard](screenshots/Observablity_dashboard.png)
+![Observability Dashboard](docs/Observablity_dashboard.png)
 
 ### Quality Dashboard
-![Quality Dashboard](screenshots/Quality_dashboard.png)
+![Quality Dashboard](docs/Quality_dashboard.png)
 
 ### Drilldown Dashboard
-![Drilldown Dashboard](screenshots/Drilldown_dashboard.png)
+![Drilldown Dashboard](docs/Drilldown_dashboard.png)
 
 
 ### Logs Dashboard
-![Logs Dashboard](screenshots/Logs_dashboard.png)
+![Logs Dashboard](docs/Logs_dashboard.png)
 
 ## 🔧 Engineering Challenges & Solutions
 
