@@ -1,145 +1,217 @@
-# iot-data-platform
-Containerized IoT data platform with orchestration, ETL, and observability layer
-## Quick Start
-1. Clone the repo.
-2. Create environment file:
-3. bash > cp .env.example .env
-4. Run `docker-compose up -d`.
-5. Access the system:
-   - **Grafana:** localhost:3000 (Admin/Admin)
-   - **Airflow:** localhost:8080 (admin/Airflow)
-   - ⚠️ Default credentials are for local development only. Change before production use.
-   - ## Hardware Specification
-- **Micro-controller:** Raspberry Pi 4 / Zero 2W.
-- **Sensor:** DHT22 (AM2302) Temperature & Humidity.
-- **Circuit:** 10k Ohm pull-up resistor between VCC and Data pin.
-- **Connection:** GPIO 17 (Any GPIO port).
-- ## 🏗️ System Architecture
-![System Flow](./docs/architecture_flow.png)
-**High-concurrency ingestion loop:**
-Sensor → Flask → Bronze (iot_raw) → Airflow ETL → Silver (iot_clean) → Grafana
+##  What's New in Version 2
 
-## Data Governance (Medallion Architecture)
-The system implements a multi-layer storage strategy within PostgreSQL to ensure forensic data integrity:
+###  1. High-Throughput Data Simulator
+A Python-based simulator generates **5 events per second** across multiple virtual devices for realistic load testing across ingestion throughput, ETL performance, quarantine logic, and storage behavior under stress.
 
-1. **iot_raw (Bronze Layer):**
-   - Ingests untouched JSON payloads directly from the sensor.
-   - Acts as the immutable "Source of Truth" for replayability.
+---
 
-2. **iot_clean (Silver Layer):**
-   - Transformed and validated data.
-   - Deduplicated and cast into proper analytical types (Timestamp, Celsius, Humidity %).
+###  2. Expanded Quarantine & Malformed Data Handling
+Version 2 introduces stricter validation and more robust quarantine flows:
 
-3. **iot_quarantine:**
-   - Automatically isolates corrupted, out-of-range, or "null" readings.
-   - Prevents hardware noise from polluting the analytical dashboards without deleting the evidence.
-## Key Features
-- **Zero-Touch Provisioning:** Dashboards and Datasources are automatically manifest via YAML configuration.
-- **Idempotent ETL:** Airflow pipelines ensure that rerunning a task never duplicates data.
-- **Real-time Observability:** Monitoring ingestion jitter (P99) and pipeline success rates.
+- **ETL Quarantine** — Invalid or rule-breaking events are routed to `iot_quarantine` for inspection
+- **Flask Malformed Data Quarantine** — Non-schema-compliant payloads are captured in a dedicated quarantine inside the Flask ingestion service
+- **Strict Version Validation** — Incoming events must match the expected schema version; mismatches are quarantined automatically
+
+---
+
+###  3. Buffer Storage for Ingestion Failures
+To handle PostgreSQL unavailability without data loss:
+
+- Local buffer storage for valid events when the database is unreachable
+- Automatic retry DAG running every 6 hours
+- Buffered events are re-submitted to `iot_raw` once the database is healthy
+
+---
+
+###  4. Structured JSON Logging + Grafana Loki Integration
+Both Flask and the ETL pipeline now emit **structured JSON logs**, enabling machine-readable, consistently schemed, searchable logs via a full **Grafana Loki** stack for centralized log aggregation.
+
+---
+
+###  5. TimescaleDB + Hypertables
+Load testing revealed ingestion spikes causing high disk I/O and slow inserts. Version 2 addresses this with:
+
+- **TimescaleDB extension** with hypertables on `iot_raw` and time-series tables
+- Significantly improved insert performance, query speed, storage efficiency, and long-term scalability
+
+## 🚀 Quick Start
+
+1. Clone the repo
+2. Create the environment file:
+```bash
+   cp .env.example .env
+```
+3. Start the stack:
+```bash
+   docker compose up -d
+```
+4. To run the data simulator, navigate to the scripts folder and activate the virtual environment:
+```bash
+   cd scripts
+   source venv/bin/activate
+   python simulator.py
+```
+
+### Access the System
+
+| Service | URL | Credentials |
+|---|---|---|
+| Grafana Dashboards | `localhost:3000` | Admin / Admin |
+| Airflow | `localhost:8080` | admin / Airflow |
+
+> ⚠️ Default credentials are for local development only. Change before any production use.
+## System architecture
+![System Architecture](screenshots/System_architecture.png) 
+
+## 🔄 Data Flow
+
+### 1. Device → Ingestion Layer
+The Device Simulator (or real IoT devices) sends telemetry via **HTTP POST** to the Flask Ingestion API, which performs:
+
+- JSON validation
+- Schema + version validation
+- Field-level checks
+
+> Malformed or non-JSON payloads are immediately routed to **Flask Quarantine**.
+
+---
+
+### 2. Ingestion → Storage Layer
+After validation:
+
+| Condition | Action |
+|---|---|
+| PostgreSQL/TimescaleDB available | Data inserted into `iot_raw` |
+| Database unavailable | Data written to local buffer storage |
+
+A dedicated **Airflow Replay DAG** runs every 6 hours to push buffered data into `iot_raw` once the DB is healthy — ensuring **zero data loss during outages**.
+
+---
+
+### 3. ETL Pipeline — Raw → Clean
+Airflow processes new records from `iot_raw` using watermarking (`raw_id`), idempotent inserts, and atomic transactions:
+
+- ✅ Valid events → transformed and enriched → `iot_clean`
+- ⚠️ Rule-violating or schema-breaking events → `iot_quarantine`
+
+---
+
+### 4. Observability Layer
+All services emit **structured JSON logs** to Loki:
+
+- Flask ingestion logs
+- ETL pipeline logs
+- Buffer replay logs
+- Quarantine events
+
+Grafana dashboards visualize ingestion throughput, ETL performance, clean vs quarantine counts, device activity, and buffer replay metrics — providing **full visibility into system behavior**.
+
 ## System Dashboards
-![Quality & Operations Dashboard](./docs/quality_dashboard.png)
-*Real-time monitoring of sensor health and medallion layer throughput.*
 
-![Observability Dashboard](./docs/observability_dashboard.png)
-*Tracking P99 ingestion jitter and pipeline success metrics.*
+### Observability Dashboard
+![Observability Dashboard](screenshots/Observablity_dashboard.png)
 
-![Pipeline Drill-down](./docs/drilldown_dashboard.png)
-*Detailed Execution View: Direct lookup by Run ID to audit specific batch performance and row-level metrics.*
+### Quality Dashboard
+![Quality Dashboard](screenshots/Quality_dashboard.png)
 
-## Engineering
-This project demonstrates:
-- production-style data pipeline design
-- real-time ingestion with edge devices
-- medallion architecture applied to IoT telemetry
-- failure isolation via quarantine layer
-- observability-first system design
+### Drilldown Dashboard
+![Drilldown Dashboard](screenshots/Drilldown_dashboard.png)
 
-## Engineering Challenges
 
-### 1. Data Pipeline Integrity & State Management
+### Logs Dashboard
+![Logs Dashboard](screenshots/Logs_dashboard.png)
 
-#### 1.1 The Watermark System (Anti-Infinite Loop)
+## 🔧 Engineering Challenges & Solutions
 
-The pipeline uses a watermark strategy to track which records have been processed. Initially, I used `ingest_ts` (timestamp) as the watermark, but this caused reprocessing issues when records arrived out of order or with identical timestamps.
+### 1. Log Ownership & Permission Conflicts
+Cloning the repository also cloned the `logs/` directory, introducing a critical startup failure:
 
-**Problem:** Multiple records could share the same `ingest_ts`, and using `WHERE ingest_ts > :last_ts` would skip records that arrived in the same second as the last processed batch.
+| Actor | UID |
+|---|---|
+| Host machine user | 1000 |
+| Flask (inside Docker) | 0 |
+| Airflow (inside Docker) | 50000 |
 
-**Solution:** Switched to `raw_id` (auto-incrementing primary key) as the watermark.
+Airflow attempted to write into a folder owned by UID 1000 — resulting in `Permission Denied` on every startup. A classic Docker volume ownership mismatch where host permissions leaked into the container environment.
 
-#### 1.2 Idempotency & Upserts
-
-To prevent duplicate data if a task restarts mid-execution, the pipeline uses `ON CONFLICT (raw_id) DO NOTHING` logic.
-
-- **Without this:** A failed task retry would insert the same records again, corrupting downstream analytics.
-- **With this:** The pipeline can run multiple times safely—state remains consistent regardless of retries or manual reruns.
-
-#### 1.3 Atomic Transactions (Psycopg2 Context Managers)
-
-**The Problem:** If the data is saved to `iot_clean` but the system crashes before updating the watermark table, the next run will re-ingest the same records.
-
-**The Fix:** Wrapped the `INSERT` into the clean layer and the `UPDATE` of the watermark into a single Psycopg2 Transaction Block (`with conn:`).
-
-**Result:** Atomic Integrity. If the watermark update fails for any reason, the data insertion rolls back. The system is either 100% updated or 0% changed. No "partial-success" corruption.
+**Solution:** A dedicated `fix-permissions` initialization service was added to `docker-compose.yml` that runs before any other service, normalizes ownership, separates Flask and Airflow log directories, and prevents host-level permissions from breaking containerized services.
 
 ---
 
-### 2. Infrastructure Migration & Optimization
+### 2. Gunicorn Worker Memory Isolation & Circuit Breaker Inconsistency
+The ingestion service originally ran **4 Gunicorn workers**. Each worker maintains its own isolated memory space, which broke the circuit breaker logic entirely:
 
-#### 2.1 Network Orchestration & Service Connectivity
+- Worker A detected DB down → switched to buffer mode
+- Worker B still thought DB was up → kept retrying
+- Worker C and D logged contradicting states
 
-- **Port Conflict Resolution:** Identified OS-level service interference on Port 5000 (common in modern distributions). Remapped the ingestion API to Port 5001 to ensure non-blocking traffic.
-- **Health-Check Bootstrapping:** Engineered a startup sequence for the Flask API that verifies PostgreSQL availability and schema integrity before initiating the listener, preventing "race condition" failures.
+Debugging was impossible. Each worker was living in a different state universe.
 
-#### 2.2 Eliminating Ingestion Jitter (Handshake Optimization)
-
-Initial monitoring via Grafana revealed periodic **15-second latency spikes** during high-concurrency periods.
-
-**Root Cause:** Diagnosed "Handshake Exhaustion." The system was establishing a fresh TCP/DB connection for every sensor hit, incurring unsustainable overhead.
-
-**The Solution:** Migrated the backend logic to `psycopg2.ThreadedConnectionPool`.
-
-**Result:** By maintaining persistent, "pre-warmed" sessions, peak ingestion latency was reduced from **15,000ms to under 20ms**, converting the ingestion loop into an industrial-grade pipeline.
-
-#### 2.3 Fault Tolerance & Autonomous Self-Healing
-
-Extended observability logs identified `psycopg2.InterfaceError` events triggered by idle timeouts and TCP interruptions.
-
-**The Challenge:** Stale connections in the pool would occasionally "time out," causing the API to hang while attempting to reuse a severed socket.
-
-**The Mitigation:** Refactored the pool handler to catch `OperationalError` and `InterfaceError` exceptions. The system now automatically purges stale connections and initializes new sessions within a single ingestion cycle (~6s).
-
-**Outcome:** Achieved a self-healing infrastructure that maintains 100% data capture without manual intervention.
+**Solution:** Redesigned the worker model to **1 worker + 8 threads**, ensuring a single shared memory space, consistent circuit breaker behavior, predictable logging, and no more conflicting worker states.
 
 ---
 
-### 3. Concurrency Control & Run ID Serialization
+### 3. Buffer Storage Permission Issues Between Flask and Airflow
+When PostgreSQL is unavailable, Flask writes buffered events as `UID 0 / GID 0`. Airflow runs as `UID 50000 / GID 0`. Despite sharing group 0, the volume mount caused Airflow to hit `Permission Denied` when attempting to read, delete, or clean up buffered files — risking duplicate ingestion and breaking the replay DAG entirely.
 
-During the initial orchestration phase, I observed a "gap" in the `pipeline_runs` metadata where `run_id` values would jump non-linearly (e.g., from 51 to 80) despite consistent 5-minute execution intervals.
+**Solution:** Replaced the bind mount with a dedicated Docker-managed volume:
 
-**The Problem:** Race Conditions. Airflow's default settings were allowing multiple DAG runs to overlap. If one run lagged, the scheduler triggered a second parallel instance. This led to "Handshake Contention" and metadata skipping, as two processes fought for the same watermark.
+```yaml
+buffer_volume:
+  driver: local
+```
 
-**The Fix:**
-- Implemented `max_active_runs=1` in the DAG configuration to enforce strict Serial Execution.
-- Set `catchup=False` to prevent the scheduler from triggering a "burst" of historical runs.
-
-**Outcome:** The pipeline is now Deterministic. Each run must complete and commit its transaction before the next one can boot. This stabilized the `run_id` sequence and eliminated state-collision risks.
+Both Flask and Airflow mount this volume explicitly, ensuring consistent permissions, shared access, safe deletion, and a fully reliable replay mechanism under all conditions.
 
 ---
 
-## What I Learned
+### 4. Ingestion Spikes, TimescaleDB Migration & `/dev/shm` Memory Pressure
+Under load testing with tens of thousands of events, vanilla PostgreSQL began showing severe degradation:
 
-### Technical
-- Exactly-once semantics require watermarking + idempotency + atomic transactions working together
-- Connection pooling isn't just for performance—it's critical for fault tolerance in high-frequency ingestion
-- Concurrency bugs (like run ID gaps) often hide in orchestration config, not application code
+- High disk I/O and WAL pressure
+- Slow inserts and queue buildup
+- Ingestion latency spikes
 
-### Operational
-- Observability must be built in from day one—retrofitting metrics/logs is painful
-- Self-healing systems (like stale connection purging) reduce operational burden significantly
+The root cause was straightforward: PostgreSQL is not optimized for high-frequency time-series inserts.
 
-### Architectural
-- Separation of concerns (raw → staging → analytics) makes debugging and iteration faster
-- Docker networks + health checks eliminate an entire class of startup race conditions
-- Idempotent ETL lets you rerun pipelines confidently without data corruption
+**Solution — TimescaleDB Migration:**
+The storage layer was migrated to TimescaleDB, enabling hypertables, chunking, compression, and significantly faster inserts. This immediately stabilized ingestion performance under load.
+
+**Solution — `/dev/shm` Tuning:**
+Under heavy load, Gunicorn worker was buffering incoming requests faster than the OS could flush them, causing worker stalls, sudden restarts, and occasional request drops — especially visible when processing 100k+ events over a few hours.
+
+A dedicated `/dev/shm` shared memory mount was allocated for the Flask container:
+
+```yaml
+flask-ingest:
+  shm_size: '256mb'
+```
+
+Combined with the 1 worker + 8 threads model, this provided faster in-memory buffering, reduced worker stalls, and significantly more predictable latency under bursty traffic.
+
+
+## 🧠 What I Learned
+
+Building Version 2 surfaced lessons that only appear when working with real systems under real load.
+
+**1. Container permissions are not trivial**
+Host-machine file ownership can silently break containerized services. A cloned `logs/` directory with the wrong UID was enough to prevent Airflow from starting. Understanding how Docker propagates permissions across volumes became essential.
+
+**2. Worker models matter more than expected**
+Running multiple Gunicorn workers seemed harmless until each worker maintained its own isolated memory — causing inconsistent circuit breaker states and contradictory logs. Switching to a single worker with threaded concurrency provided predictable behavior and easier debugging.
+
+**3. Time-series workloads need time-series databases**
+Under high throughput, vanilla PostgreSQL struggled with insert spikes and WAL pressure. Migrating to TimescaleDB with hypertables and chunking immediately stabilized ingestion performance and reduced latency.
+
+**4. Shared memory (`/dev/shm`) tuning can make or break ingestion**
+Heavy bursts of incoming data exposed shared memory pressure inside the container. Allocating a dedicated `/dev/shm` mount prevented worker stalls and kept ingestion smooth.
+
+**5. Cross-service coordination requires explicit design**
+Flask and Airflow interacting with the same buffer directory revealed how subtle permission mismatches can break replay logic. Using a dedicated Docker-managed volume ensured consistent access and reliable cleanup.
+
+**6. Observability is not optional**
+Structured JSON logs, Loki, and Grafana dashboards turned debugging from guesswork into clarity. Once observability was in place, every subsystem became easier to reason about and faster to fix.
+
+
+
 

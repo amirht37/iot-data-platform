@@ -6,8 +6,7 @@ from transform import transform_data
 from load import load_data
 from Logger import logger
 
-# 🏛️ INFRASTRUCTURE HANDSHAKE
-# Pulling the Maserati keys directly from the environment (.env)
+
 user = os.getenv("POSTGRES_USER", "airflow")
 password = os.getenv("POSTGRES_PASSWORD", "airflow")
 host = os.getenv("DB_HOST", "postgres")
@@ -20,8 +19,6 @@ DB_URI = f"postgresql+psycopg2://{user}:{password}@{host}:{port}/{db_name}"
 engine = create_engine(DB_URI)
 
 def run_pipeline():
-    # 1. Start the Audit Trail
-    # We use f-strings to inject the PIPELINE_NAME variable
     insert_run_query = text(f"""
         INSERT INTO iot_control.pipeline_runs (pipeline_name, start_time, status)
         VALUES ('{PIPELINE_NAME}', NOW(), 'RUNNING')
@@ -34,7 +31,6 @@ def run_pipeline():
     try:
         logger.info(f"--- {PIPELINE_NAME} RUN {run_id} STARTED ---")
 
-        # 2. Extract
         df_raw = extract_data(engine)
         if df_raw is None or df_raw.empty:
             logger.info("Scan complete: No new data. Exiting.")
@@ -51,7 +47,7 @@ def run_pipeline():
         # 4. Load
         load_data(df_clean, df_quarantine, engine, run_id) 
 
-        # 5. Final Operational Status Update
+
         update_status(run_id, 'SUCCESS', rows_extracted, rows_clean, rows_quarantined)
         logger.info(f"--- {PIPELINE_NAME} RUN {run_id} COMPLETED SUCCESSFULLY ---")
 
@@ -59,7 +55,7 @@ def run_pipeline():
         logger.exception(f"PIPELINE CRASHED: Run {run_id}")
         update_status(run_id, 'FAILED', error_message=str(e))
         
-        # Ensure Metadata Table shows the failure for the Dashboard
+
         with engine.begin() as conn:
             conn.execute(text(f"""
                 UPDATE iot_control.pipeline_metadata 

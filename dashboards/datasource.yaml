@@ -1,15 +1,24 @@
 apiVersion: 1
+
 datasources:
   - name: PostgreSQL
     type: postgres
     url: postgres:5432
     database: iot_db  
     user: grafana
-    isDefault: true
+    isDefault: true             
     secureJsonData:
       password: ${DB_PASSWORD} 
     jsonData:
       sslmode: 'disable'
       postgresVersion: 1600
       database: iot_db 
-      searchPath: "iot_clean, iot_raw, public"
+      searchPath: "iot_clean, iot_raw, public, iot_quarantine"
+
+  - name: Loki
+    type: loki                  
+    access: proxy
+    url: http://iot-loki:3100
+    jsonData:
+      maxLines: 1000
+    isDefault: false             

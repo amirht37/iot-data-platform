@@ -150,7 +150,7 @@
                         "value": [
                           {
                             "title": "Inspect Run ${__value.text}",
-                            "url": "http://localhost:3000/d/adj4fsv/run-details?var-run_id=${__data.fields.ID}"
+                            "url": "http://localhost:3000/d/adc6lcv/run-details?var-run_id=${__data.fields.ID}"
                           }
                         ]
                       }
@@ -631,3 +631,4 @@
     }
   }
 }
+

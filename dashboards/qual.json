@@ -2,21 +2,21 @@
   "apiVersion": "dashboard.grafana.app/v2",
   "kind": "Dashboard",
   "metadata": {
-    "name": "adnb4hv",
+    "name": "adp6p6c",
     "namespace": "default",
-    "uid": "f9f242d3-3c32-4eed-a1b5-c02cc90e415f",
-    "resourceVersion": "1778254989518000",
-    "generation": 18,
-    "creationTimestamp": "2026-05-08T15:05:57Z",
+    "uid": "2760d031-a81d-431c-9f2d-7b51496969bf",
+    "resourceVersion": "1780572710798017",
+    "generation": 10,
+    "creationTimestamp": "2026-06-03T07:38:16Z",
     "labels": {
-      "grafana.app/deprecatedInternalID": "3629144921296896"
+      "grafana.app/deprecatedInternalID": "3931154014498816"
     },
     "annotations": {
-      "grafana.app/createdBy": "user:eflf1h0ssia68b",
+      "grafana.app/createdBy": "user:cfnyqzdg9lmv4b",
       "grafana.app/folder": "",
       "grafana.app/saved-from-ui": "Grafana v13.0.1 (a100054f)",
-      "grafana.app/updatedBy": "user:eflf1h0ssia68b",
-      "grafana.app/updatedTimestamp": "2026-05-08T15:43:09Z"
+      "grafana.app/updatedBy": "user:cfnyqzdg9lmv4b",
+      "grafana.app/updatedTimestamp": "2026-06-04T11:31:50Z"
     }
   },
   "spec": {
@@ -48,150 +48,6 @@
         "kind": "Panel",
         "spec": {
           "id": 1,
-          "title": "Temperature over time ",
-          "description": "",
-          "links": [],
-          "data": {
-            "kind": "QueryGroup",
-            "spec": {
-              "queries": [
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "query": {
-                      "kind": "DataQuery",
-                      "group": "grafana-postgresql-datasource",
-                      "version": "v0",
-                      "datasource": {
-                        "name": "PostgreSQL"
-                      },
-                      "spec": {
-                        "dataset": "iot_db",
-                        "editorMode": "code",
-                        "format": "table",
-                        "rawQuery": true,
-                        "rawSql": "SELECT\r\n  ingest_ts AS \"time\",\r\n  temperature\r\nFROM iot_clean.clean_events\r\nWHERE $__timeFilter(ingest_ts)\r\nORDER BY 1",
-                        "sql": {
-                          "columns": [
-                            {
-                              "parameters": [],
-                              "type": "function"
-                            }
-                          ],
-                          "groupBy": [
-                            {
-                              "property": {
-                                "type": "string"
-                              },
-                              "type": "groupBy"
-                            }
-                          ],
-                          "limit": 50
-                        }
-                      }
-                    },
-                    "refId": "A",
-                    "hidden": false
-                  }
-                }
-              ],
-              "transformations": [],
-              "queryOptions": {}
-            }
-          },
-          "vizConfig": {
-            "kind": "VizConfig",
-            "group": "timeseries",
-            "version": "13.0.1",
-            "spec": {
-              "options": {
-                "annotations": {
-                  "clustering": -1,
-                  "multiLane": false
-                },
-                "legend": {
-                  "calcs": [
-                    "min",
-                    "max",
-                    "mean",
-                    "last"
-                  ],
-                  "displayMode": "list",
-                  "placement": "bottom",
-                  "showLegend": true
-                },
-                "tooltip": {
-                  "hideZeros": false,
-                  "mode": "single",
-                  "sort": "none"
-                }
-              },
-              "fieldConfig": {
-                "defaults": {
-                  "displayName": "Temperature",
-                  "unit": "celsius",
-                  "thresholds": {
-                    "mode": "absolute",
-                    "steps": [
-                      {
-                        "value": 0,
-                        "color": "green"
-                      },
-                      {
-                        "value": 80,
-                        "color": "red"
-                      }
-                    ]
-                  },
-                  "color": {
-                    "mode": "continuous-GrYlRd",
-                    "seriesBy": "last"
-                  },
-                  "custom": {
-                    "axisBorderShow": true,
-                    "axisCenteredZero": false,
-                    "axisColorMode": "text",
-                    "axisLabel": "",
-                    "axisPlacement": "right",
-                    "barAlignment": 0,
-                    "barWidthFactor": 0.6,
-                    "drawStyle": "line",
-                    "fillOpacity": 4,
-                    "gradientMode": "none",
-                    "hideFrom": {
-                      "legend": false,
-                      "tooltip": false,
-                      "viz": false
-                    },
-                    "insertNulls": false,
-                    "lineInterpolation": "linear",
-                    "lineWidth": 2,
-                    "pointSize": 5,
-                    "scaleDistribution": {
-                      "type": "linear"
-                    },
-                    "showPoints": "auto",
-                    "showValues": false,
-                    "spanNulls": false,
-                    "stacking": {
-                      "group": "A",
-                      "mode": "none"
-                    },
-                    "thresholdsStyle": {
-                      "mode": "off"
-                    }
-                  }
-                },
-                "overrides": []
-              }
-            }
-          }
-        }
-      },
-      "panel-2": {
-        "kind": "Panel",
-        "spec": {
-          "id": 2,
           "title": "Humidity over time ",
           "description": "",
           "links": [],
@@ -204,17 +60,14 @@
                   "spec": {
                     "query": {
                       "kind": "DataQuery",
-                      "group": "grafana-postgresql-datasource",
+                      "group": "",
                       "version": "v0",
-                      "datasource": {
-                        "name": "PostgreSQL"
-                      },
                       "spec": {
                         "dataset": "iot_db",
                         "editorMode": "code",
                         "format": "table",
                         "rawQuery": true,
-                        "rawSql": "SELECT\r\n  ingest_ts AS \"time\",\r\n  humidity\r\nFROM iot_clean.clean_events\r\nWHERE $__timeFilter(ingest_ts)\r\nORDER BY 1",
+                        "rawSql": "SELECT\r\n  ingest_ts AS \"time\",\r\n  humidity\r\nFROM iot_clean.clean_events\r\nWHERE \r\n  $__timeFilter(ingest_ts)\r\n  AND device_id = '$device'\r\nORDER BY 1;",
                         "sql": {
                           "columns": [
                             {
@@ -257,8 +110,7 @@
                   "calcs": [
                     "min",
                     "max",
-                    "mean",
-                    "last"
+                    "mean"
                   ],
                   "displayMode": "list",
                   "placement": "bottom",
@@ -287,10 +139,10 @@
                     ]
                   },
                   "color": {
-                    "mode": "palette-classic"
+                    "mode": "palette-classic-by-name"
                   },
                   "custom": {
-                    "axisBorderShow": true,
+                    "axisBorderShow": false,
                     "axisCenteredZero": false,
                     "axisColorMode": "text",
                     "axisLabel": "",
@@ -298,7 +150,151 @@
                     "barAlignment": 0,
                     "barWidthFactor": 0.6,
                     "drawStyle": "line",
-                    "fillOpacity": 8,
+                    "fillOpacity": 5,
+                    "gradientMode": "none",
+                    "hideFrom": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": false
+                    },
+                    "insertNulls": false,
+                    "lineInterpolation": "linear",
+                    "lineStyle": {
+                      "fill": "solid"
+                    },
+                    "lineWidth": 1.5,
+                    "pointSize": 5,
+                    "scaleDistribution": {
+                      "type": "linear"
+                    },
+                    "showPoints": "auto",
+                    "showValues": false,
+                    "spanNulls": true,
+                    "stacking": {
+                      "group": "A",
+                      "mode": "none"
+                    },
+                    "thresholdsStyle": {
+                      "mode": "off"
+                    }
+                  }
+                },
+                "overrides": []
+              }
+            }
+          }
+        }
+      },
+      "panel-2": {
+        "kind": "Panel",
+        "spec": {
+          "id": 2,
+          "title": "Temperature over time ",
+          "description": "",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "grafana-postgresql-datasource",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "PCC52D03280B7034C"
+                      },
+                      "spec": {
+                        "dataset": "iot_db",
+                        "editorMode": "code",
+                        "format": "table",
+                        "rawQuery": true,
+                        "rawSql": "SELECT\r\n  ingest_ts AS \"time\",\r\n  temperature\r\nFROM iot_clean.clean_events\r\nWHERE \r\n  $__timeFilter(ingest_ts)\r\n  AND device_id = '$device'\r\nORDER BY 1;",
+                        "sql": {
+                          "columns": [
+                            {
+                              "parameters": [],
+                              "type": "function"
+                            }
+                          ],
+                          "groupBy": [
+                            {
+                              "property": {
+                                "type": "string"
+                              },
+                              "type": "groupBy"
+                            }
+                          ],
+                          "limit": 50
+                        }
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "timeseries",
+            "version": "13.0.1",
+            "spec": {
+              "options": {
+                "annotations": {
+                  "clustering": -1,
+                  "multiLane": false
+                },
+                "legend": {
+                  "calcs": [
+                    "max",
+                    "min",
+                    "mean"
+                  ],
+                  "displayMode": "list",
+                  "placement": "bottom",
+                  "showLegend": true
+                },
+                "tooltip": {
+                  "hideZeros": false,
+                  "mode": "single",
+                  "sort": "none"
+                }
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "celsius",
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": 0,
+                        "color": "green"
+                      },
+                      {
+                        "value": 80,
+                        "color": "red"
+                      }
+                    ]
+                  },
+                  "color": {
+                    "mode": "palette-classic"
+                  },
+                  "custom": {
+                    "axisBorderShow": false,
+                    "axisCenteredZero": false,
+                    "axisColorMode": "text",
+                    "axisLabel": "",
+                    "axisPlacement": "auto",
+                    "barAlignment": 0,
+                    "barWidthFactor": 0.6,
+                    "drawStyle": "line",
+                    "fillOpacity": 0,
                     "gradientMode": "none",
                     "hideFrom": {
                       "legend": false,
@@ -335,7 +331,7 @@
         "spec": {
           "id": 3,
           "title": "Quality Rate",
-          "description": "Cleaned Vs Quarantined",
+          "description": "",
           "links": [],
           "data": {
             "kind": "QueryGroup",
@@ -349,7 +345,7 @@
                       "group": "grafana-postgresql-datasource",
                       "version": "v0",
                       "datasource": {
-                        "name": "PostgreSQL"
+                        "name": "PCC52D03280B7034C"
                       },
                       "spec": {
                         "dataset": "iot_db",
@@ -392,8 +388,7 @@
             "spec": {
               "options": {
                 "barRadius": 0,
-                "barWidth": 0.46,
-                "colorByField": "metric",
+                "barWidth": 0.43,
                 "fullHighlight": false,
                 "groupWidth": 0.7,
                 "legend": {
@@ -403,7 +398,7 @@
                   "showLegend": true
                 },
                 "orientation": "auto",
-                "showValue": "never",
+                "showValue": "auto",
                 "stacking": "none",
                 "tooltip": {
                   "hideZeros": false,
@@ -412,7 +407,7 @@
                 },
                 "xField": "metric",
                 "xTickLabelRotation": 0,
-                "xTickLabelSpacing": 0
+                "xTickLabelSpacing": 100
               },
               "fieldConfig": {
                 "defaults": {
@@ -434,26 +429,27 @@
                     "mode": "palette-classic"
                   },
                   "custom": {
-                    "axisBorderShow": true,
+                    "axisBorderShow": false,
                     "axisCenteredZero": false,
                     "axisColorMode": "text",
-                    "axisLabel": "total events",
+                    "axisLabel": "",
                     "axisPlacement": "auto",
-                    "fillOpacity": 6,
-                    "gradientMode": "none",
+                    "fillOpacity": 13,
+                    "gradientMode": "hue",
                     "hideFrom": {
                       "legend": false,
                       "tooltip": false,
                       "viz": false
                     },
-                    "lineWidth": 3,
+                    "lineWidth": 2,
                     "scaleDistribution": {
                       "type": "linear"
                     },
                     "thresholdsStyle": {
                       "mode": "off"
                     }
-                  }
+                  },
+                  "fieldMinMax": false
                 },
                 "overrides": []
               }
@@ -465,7 +461,7 @@
         "kind": "Panel",
         "spec": {
           "id": 4,
-          "title": "Events ",
+          "title": "Events Cleaned Per Minute",
           "description": "",
           "links": [],
           "data": {
@@ -480,7 +476,7 @@
                       "group": "grafana-postgresql-datasource",
                       "version": "v0",
                       "datasource": {
-                        "name": "PostgreSQL"
+                        "name": "PCC52D03280B7034C"
                       },
                       "spec": {
                         "dataset": "iot_db",
@@ -557,7 +553,7 @@
                     "mode": "palette-classic"
                   },
                   "custom": {
-                    "axisBorderShow": true,
+                    "axisBorderShow": false,
                     "axisCenteredZero": false,
                     "axisColorMode": "text",
                     "axisLabel": "",
@@ -575,7 +571,7 @@
                     "insertNulls": false,
                     "lineInterpolation": "linear",
                     "lineWidth": 1,
-                    "pointSize": 4,
+                    "pointSize": 5,
                     "scaleDistribution": {
                       "type": "linear"
                     },
@@ -608,20 +604,7 @@
               "x": 0,
               "y": 0,
               "width": 12,
-              "height": 14,
-              "element": {
-                "kind": "ElementReference",
-                "name": "panel-2"
-              }
-            }
-          },
-          {
-            "kind": "GridLayoutItem",
-            "spec": {
-              "x": 12,
-              "y": 0,
-              "width": 12,
-              "height": 14,
+              "height": 15,
               "element": {
                 "kind": "ElementReference",
                 "name": "panel-1"
@@ -631,10 +614,23 @@
           {
             "kind": "GridLayoutItem",
             "spec": {
-              "x": 0,
-              "y": 14,
+              "x": 12,
+              "y": 0,
               "width": 12,
-              "height": 14,
+              "height": 15,
+              "element": {
+                "kind": "ElementReference",
+                "name": "panel-2"
+              }
+            }
+          },
+          {
+            "kind": "GridLayoutItem",
+            "spec": {
+              "x": 0,
+              "y": 15,
+              "width": 12,
+              "height": 15,
               "element": {
                 "kind": "ElementReference",
                 "name": "panel-3"
@@ -645,9 +641,9 @@
             "kind": "GridLayoutItem",
             "spec": {
               "x": 12,
-              "y": 14,
+              "y": 15,
               "width": 12,
-              "height": 14,
+              "height": 15,
               "element": {
                 "kind": "ElementReference",
                 "name": "panel-4"
@@ -681,8 +677,66 @@
       "hideTimepicker": false,
       "fiscalYearStartMonth": 0
     },
-    "title": "IoT Quality & Operations",
-    "variables": [],
+    "title": "Iot Quality & Operations",
+    "variables": [
+      {
+        "kind": "QueryVariable",
+        "spec": {
+          "name": "device",
+          "current": {
+            "text": "pico_001",
+            "value": "pico_001"
+          },
+          "label": "Select Device",
+          "hide": "dontHide",
+          "refresh": "onDashboardLoad",
+          "skipUrlSync": false,
+          "query": {
+            "kind": "DataQuery",
+            "group": "grafana-postgresql-datasource",
+            "version": "v0",
+            "datasource": {
+              "name": "PCC52D03280B7034C"
+            },
+            "spec": {
+              "dataset": "iot_db",
+              "editorMode": "code",
+              "format": "table",
+              "query": "SELECT DISTINCT device_id from iot_clean.clean_events ",
+              "rawQuery": true,
+              "rawSql": "SELECT DISTINCT device_id from iot_clean.clean_events ",
+              "refId": "SQLVariableQueryEditor-VariableQuery",
+              "sql": {
+                "columns": [
+                  {
+                    "parameters": [],
+                    "type": "function"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "property": {
+                      "type": "string"
+                    },
+                    "type": "groupBy"
+                  }
+                ],
+                "limit": 50
+              }
+            }
+          },
+          "regex": "",
+          "regexApplyTo": "value",
+          "sort": "disabled",
+          "definition": "SELECT DISTINCT device_id from iot_clean.clean_events ",
+          "options": [],
+          "multi": false,
+          "includeAll": false,
+          "allValue": "",
+          "allowCustomValue": false
+        }
+      }
+    ],
     "preferences": {
       "layout": {
         "kind": "GridLayout",

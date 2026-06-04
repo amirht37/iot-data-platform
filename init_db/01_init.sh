@@ -1,42 +1,49 @@
 #!/bin/bash
 set -e
 
-# ----------------------------------------------------------
-# 1. GLOBAL SETUP (Users & DBs)
-# ----------------------------------------------------------
+
 psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "postgres" <<-EOSQL
     DO \$\$
     BEGIN
         IF NOT EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = 'grafana') THEN
             CREATE USER grafana WITH PASSWORD '1234';
         END IF;
+        
+        IF NOT EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = 'airflow') THEN
+            CREATE USER airflow WITH PASSWORD 'airflow';
+        END IF;
     END
     \$\$;
 
-    CREATE DATABASE iot_db;
-    CREATE DATABASE airflow;
+    SELECT 'CREATE DATABASE iot_db' WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = 'iot_db')\gexec
+    SELECT 'CREATE DATABASE airflow' WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = 'airflow')\gexec
 EOSQL
 
-# ----------------------------------------------------------
-# 2. IOT_DB INFRASTRUCTURE (The Vault)
-# ----------------------------------------------------------
+
 psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "iot_db" <<-EOSQL
+    -- Initialize the TimescaleDB extension engine
+    CREATE EXTENSION IF NOT EXISTS timescaledb CASCADE;
+
     -- SCHEMAS
     CREATE SCHEMA IF NOT EXISTS iot_raw;
     CREATE SCHEMA IF NOT EXISTS iot_control;
     CREATE SCHEMA IF NOT EXISTS iot_clean;
     CREATE SCHEMA IF NOT EXISTS iot_quarantine;
 
-    -- RAW TABLE
+
     CREATE TABLE IF NOT EXISTS iot_raw.raw_events (
-        raw_id SERIAL PRIMARY KEY,
+        raw_id SERIAL,
         payload JSONB,
         ingest_ts TIMESTAMPTZ DEFAULT now(),
-        source CHARACTER VARYING(50)
+        source CHARACTER VARYING(50),
+        PRIMARY KEY (raw_id, ingest_ts)
     );
     CREATE INDEX IF NOT EXISTS idx_raw_ingest_ts ON iot_raw.raw_events (ingest_ts DESC);
 
-    -- CONTROL TABLES
+  
+    SELECT create_hypertable('iot_raw.raw_events', 'ingest_ts', chunk_time_interval => INTERVAL '1 day', if_not_exists => TRUE);
+
+
     CREATE TABLE IF NOT EXISTS iot_control.pipeline_runs (
         run_id SERIAL PRIMARY KEY,
         pipeline_name VARCHAR(100),
@@ -57,7 +64,7 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "iot_db" <<-EOSQL
         updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW()
     );
 
-    -- CLEAN TABLE
+
     CREATE TABLE IF NOT EXISTS iot_clean.clean_events (
         event_id SERIAL PRIMARY KEY,
         raw_id INTEGER NOT NULL,
@@ -76,7 +83,6 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "iot_db" <<-EOSQL
     CREATE INDEX IF NOT EXISTS idx_clean_events_event_ts ON iot_clean.clean_events (event_ts);
     CREATE INDEX IF NOT EXISTS idx_clean_events_run_id ON iot_clean.clean_events (run_id);
 
-    -- QUARANTINE TABLE
     CREATE TABLE IF NOT EXISTS iot_quarantine.quarantine_events (
         quarantine_id SERIAL PRIMARY KEY,
         raw_id INTEGER NOT NULL,
@@ -95,13 +101,13 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "iot_db" <<-EOSQL
     CREATE INDEX IF NOT EXISTS idx_quarantine_event_ts ON iot_quarantine.quarantine_events (event_ts);
     CREATE INDEX IF NOT EXISTS idx_quarantine_run_id ON iot_quarantine.quarantine_events (run_id);
 
-    -- PERMISSIONS
+    -- SECURITY GRANTS
     GRANT USAGE ON SCHEMA iot_raw, iot_control, iot_clean, iot_quarantine TO airflow;
     GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA iot_raw, iot_control, iot_clean, iot_quarantine TO airflow;
     GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA iot_raw, iot_control, iot_clean, iot_quarantine TO airflow;
+    ALTER DEFAULT PRIVILEGES IN SCHEMA iot_raw, iot_control, iot_clean, iot_quarantine GRANT ALL ON TABLES TO airflow;
 
     GRANT USAGE ON SCHEMA iot_raw, iot_clean, iot_control, iot_quarantine TO grafana;
     GRANT SELECT ON ALL TABLES IN SCHEMA iot_raw, iot_clean, iot_control, iot_quarantine TO grafana;
     ALTER DEFAULT PRIVILEGES IN SCHEMA iot_raw, iot_clean, iot_control, iot_quarantine GRANT SELECT ON TABLES TO grafana;
 EOSQL
-

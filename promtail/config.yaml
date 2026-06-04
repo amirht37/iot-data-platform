@@ -1,0 +1,31 @@
+server:
+  http_listen_port: 9080
+  grpc_listen_port: 0
+
+positions:
+  filename: /tmp/positions.yaml
+
+clients:
+  - url: http://iot-loki:3100/loki/api/v1/push
+
+scrape_configs:
+
+  - job_name: flask_api_logs
+    static_configs:
+      - targets: [localhost]
+        labels:
+          infrastructure: flask_api
+          host: main_node
+          # Targets the exact shared volume location where your FileHandler drops the data [context]
+          __path__: /var/log/central_hub/flask/**/*.log
+
+  # =======================================================================
+  # TARGET 2: DEEP RECURSIVE AIRFLOW TASK TEXT DIRECTORIES (DISK MIRROR)
+  # =======================================================================
+  - job_name: airflow_orchestration_logs
+    static_configs:
+      - targets: [localhost]
+        labels:
+          infrastructure: airflow_orchestration
+          host: main_node
+          __path__: /var/log/central_hub/**/dag_id=*/**/*.log

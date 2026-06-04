@@ -1,6 +1,54 @@
+# Environment files
 .env
-logs/
+*.env
+
+# Python cache
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
+*.pdb
+*.egg-info/
+*.egg
+
+# macOS junk
 .DS_Store
+
+# Logs
+logs/
 **/logs/
+*.log
+
+# Airflow
+airflow/logs/
+airflow/dags/__pycache__/
+airflow/plugins/__pycache__/
+airflow/airflow.db
+airflow/airflow.cfg
+airflow/webserver_config.py
+
+# Docker
+*.pid
+*.pid.lock
+
+# Virtual environments
+venv/
+env/
+.venv/
+
+# Simulator artifacts
+scripts/__pycache__/
+scripts/*.pyc
+
+# Loki / Grafana / Prometheus data
+loki/
+grafana/
+prometheus/
+data/
+tmp/
+
+# Local volumes
+volumes/
+buffer/
+buffer_volume/
+storage/

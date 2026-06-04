@@ -9,7 +9,7 @@ def load_data(df_clean, df_quarantine, engine, run_id):
     logger.info(f"Load started for Run ID: {run_id}")
     start = time.time()
 
-    # --- Identify Watermarks from both paths ---
+  
     all_raw_ids = []
     all_ts = []
     
@@ -30,7 +30,7 @@ def load_data(df_clean, df_quarantine, engine, run_id):
     try:
         with engine.begin() as conn:
             
-            # 1. Load Clean Data with UPSERT
+        
             if not df_clean.empty:
                 conn.execute(text("""
                     INSERT INTO iot_clean.clean_events 
@@ -40,7 +40,7 @@ def load_data(df_clean, df_quarantine, engine, run_id):
                 """), df_clean.to_dict('records'))
                 logger.info(f"Loaded {len(df_clean)} clean records.")
     
-            # 2. Load Quarantine Data with UPSERT
+          
             if not df_quarantine.empty:
                 conn.execute(text("""
                     INSERT INTO iot_quarantine.quarantine_events 
@@ -50,8 +50,7 @@ def load_data(df_clean, df_quarantine, engine, run_id):
                 """), df_quarantine.to_dict('records'))
                 logger.info(f"Loaded {len(df_quarantine)} quarantined records.")
 
-            # 3. COMPLETE WATERMARK UPDATE
-            # Fills last_ingest_ts, last_batch_id, and last_status
+
             conn.execute(text("""
                 INSERT INTO iot_control.pipeline_metadata 
                 (pipeline_name, last_ingest_ts, last_batch_id, last_status, updated_at)

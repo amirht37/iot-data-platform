@@ -1,27 +1,27 @@
 import logging
 import os
+from pythonjsonlogger import jsonlogger
 
-# --- Ensure consistent log directory regardless of where script runs ---
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-LOG_DIR = os.path.join(BASE_DIR, "logs")
+LOG_DIR = "/opt/airflow/logs/custom_pipeline"
 os.makedirs(LOG_DIR, exist_ok=True)
 
 LOG_FILE = os.path.join(LOG_DIR, "pipeline.log")
 
+
 logger = logging.getLogger("iot_pipeline")
 logger.setLevel(logging.INFO)
 
-# --- Add handlers only if not already configured ---
 if not logger.handlers:
-    formatter = logging.Formatter(
-        "%(asctime)s | %(levelname)s | %(name)s | %(message)s"
+    formatter = jsonlogger.JsonFormatter(
+        "%(asctime)s %(levelname)s %(name)s %(message)s",
+        rename_fields={"asctime": "timestamp", "levelname": "level", "name": "logger"}
     )
 
-    # File handler
+
     file_handler = logging.FileHandler(LOG_FILE)
     file_handler.setFormatter(formatter)
 
-    # Console handler
+
     console_handler = logging.StreamHandler()
     console_handler.setFormatter(formatter)
 

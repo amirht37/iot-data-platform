@@ -2,21 +2,21 @@
   "apiVersion": "dashboard.grafana.app/v2",
   "kind": "Dashboard",
   "metadata": {
-    "name": "adj4fsv",
+    "name": "adc6lcv",
     "namespace": "default",
-    "uid": "10244a56-f8f7-417c-85b9-bdcc5c26db2a",
-    "resourceVersion": "1778257708634010",
-    "generation": 8,
-    "creationTimestamp": "2026-05-08T16:19:21Z",
+    "uid": "2c9cc6e7-0051-40d6-ba41-b3316bc12d64",
+    "resourceVersion": "1780423155553007",
+    "generation": 2,
+    "creationTimestamp": "2026-06-02T17:57:54Z",
     "labels": {
-      "grafana.app/deprecatedInternalID": "3647619437907968"
+      "grafana.app/deprecatedInternalID": "3724898847207424"
     },
     "annotations": {
-      "grafana.app/createdBy": "user:eflf1h0ssia68b",
+      "grafana.app/createdBy": "user:ffnxze1jlu70gb",
       "grafana.app/folder": "",
       "grafana.app/saved-from-ui": "Grafana v13.0.1 (a100054f)",
-      "grafana.app/updatedBy": "user:eflf1h0ssia68b",
-      "grafana.app/updatedTimestamp": "2026-05-08T16:28:28Z"
+      "grafana.app/updatedBy": "user:ffnxze1jlu70gb",
+      "grafana.app/updatedTimestamp": "2026-06-02T17:59:15Z"
     }
   },
   "spec": {
@@ -48,7 +48,7 @@
         "kind": "Panel",
         "spec": {
           "id": 1,
-          "title": "Run Payload Audit",
+          "title": "Pipeline Run - Clean Data",
           "description": "",
           "links": [],
           "data": {
@@ -63,14 +63,110 @@
                       "group": "grafana-postgresql-datasource",
                       "version": "v0",
                       "datasource": {
-                        "name": "PostgreSQL"
+                        "name": "PCC52D03280B7034C"
                       },
                       "spec": {
                         "dataset": "iot_db",
                         "editorMode": "code",
                         "format": "table",
                         "rawQuery": true,
-                        "rawSql": "SELECT \r\n  *\r\nFROM iot_clean.clean_events\r\nWHERE run_id = '$run_id'\r\nORDER BY event_ts ASC",
+                        "rawSql": "SELECT * FROM iot_clean.clean_events WHERE run_id=$run_id ",
+                        "sql": {
+                          "columns": [
+                            {
+                              "parameters": [],
+                              "type": "function"
+                            }
+                          ],
+                          "groupBy": [
+                            {
+                              "property": {
+                                "type": "string"
+                              },
+                              "type": "groupBy"
+                            }
+                          ],
+                          "limit": 50
+                        }
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "table",
+            "version": "13.0.1",
+            "spec": {
+              "options": {
+                "cellHeight": "sm",
+                "showHeader": true
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": 0,
+                        "color": "green"
+                      },
+                      {
+                        "value": 80,
+                        "color": "red"
+                      }
+                    ]
+                  },
+                  "custom": {
+                    "align": "auto",
+                    "cellOptions": {
+                      "type": "auto"
+                    },
+                    "footer": {
+                      "reducers": []
+                    },
+                    "inspect": false
+                  }
+                },
+                "overrides": []
+              }
+            }
+          }
+        }
+      },
+      "panel-2": {
+        "kind": "Panel",
+        "spec": {
+          "id": 2,
+          "title": "Pipeline Run - Quarantine Data",
+          "description": "",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "grafana-postgresql-datasource",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "PCC52D03280B7034C"
+                      },
+                      "spec": {
+                        "dataset": "iot_db",
+                        "editorMode": "code",
+                        "format": "table",
+                        "rawQuery": true,
+                        "rawSql": "SELECT * FROM iot_quarantine.quarantine_events WHERE run_id=$run_id ",
                         "sql": {
                           "columns": [
                             {
@@ -142,145 +238,6 @@
             }
           }
         }
-      },
-      "panel-2": {
-        "kind": "Panel",
-        "spec": {
-          "id": 2,
-          "title": "Micro-Batch Metric Profile",
-          "description": "",
-          "links": [],
-          "data": {
-            "kind": "QueryGroup",
-            "spec": {
-              "queries": [
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "query": {
-                      "kind": "DataQuery",
-                      "group": "grafana-postgresql-datasource",
-                      "version": "v0",
-                      "datasource": {
-                        "name": "PostgreSQL"
-                      },
-                      "spec": {
-                        "dataset": "iot_db",
-                        "editorMode": "code",
-                        "format": "table",
-                        "rawQuery": true,
-                        "rawSql": "SELECT\r\n  event_ts AS \"time\",\r\n  temperature AS \"Temperature\",\r\n  humidity AS \"Humidity\"\r\nFROM iot_clean.clean_events\r\nWHERE run_id = '$run_id'\r\nORDER BY event_ts ASC",
-                        "sql": {
-                          "columns": [
-                            {
-                              "parameters": [],
-                              "type": "function"
-                            }
-                          ],
-                          "groupBy": [
-                            {
-                              "property": {
-                                "type": "string"
-                              },
-                              "type": "groupBy"
-                            }
-                          ],
-                          "limit": 50
-                        }
-                      }
-                    },
-                    "refId": "A",
-                    "hidden": false
-                  }
-                }
-              ],
-              "transformations": [],
-              "queryOptions": {}
-            }
-          },
-          "vizConfig": {
-            "kind": "VizConfig",
-            "group": "timeseries",
-            "version": "13.0.1",
-            "spec": {
-              "options": {
-                "annotations": {
-                  "clustering": -1,
-                  "multiLane": false
-                },
-                "legend": {
-                  "calcs": [],
-                  "displayMode": "list",
-                  "placement": "bottom",
-                  "showLegend": true
-                },
-                "tooltip": {
-                  "hideZeros": false,
-                  "mode": "single",
-                  "sort": "none"
-                }
-              },
-              "fieldConfig": {
-                "defaults": {
-                  "thresholds": {
-                    "mode": "absolute",
-                    "steps": [
-                      {
-                        "value": 0,
-                        "color": "green"
-                      },
-                      {
-                        "value": 80,
-                        "color": "red"
-                      }
-                    ]
-                  },
-                  "color": {
-                    "mode": "palette-classic"
-                  },
-                  "custom": {
-                    "axisBorderShow": false,
-                    "axisCenteredZero": false,
-                    "axisColorMode": "text",
-                    "axisLabel": "",
-                    "axisPlacement": "auto",
-                    "barAlignment": 0,
-                    "barWidthFactor": 0.6,
-                    "drawStyle": "line",
-                    "fillOpacity": 0,
-                    "gradientMode": "none",
-                    "hideFrom": {
-                      "legend": false,
-                      "tooltip": false,
-                      "viz": false
-                    },
-                    "insertNulls": false,
-                    "lineInterpolation": "linear",
-                    "lineStyle": {
-                      "fill": "solid"
-                    },
-                    "lineWidth": 1,
-                    "pointSize": 5,
-                    "scaleDistribution": {
-                      "type": "linear"
-                    },
-                    "showPoints": "auto",
-                    "showValues": false,
-                    "spanNulls": 3600000,
-                    "stacking": {
-                      "group": "A",
-                      "mode": "none"
-                    },
-                    "thresholdsStyle": {
-                      "mode": "off"
-                    }
-                  }
-                },
-                "overrides": []
-              }
-            }
-          }
-        }
       }
     },
     "layout": {
@@ -306,7 +263,7 @@
               "x": 0,
               "y": 15,
               "width": 24,
-              "height": 13,
+              "height": 15,
               "element": {
                 "kind": "ElementReference",
                 "name": "panel-2"
@@ -322,7 +279,7 @@
     "tags": [],
     "timeSettings": {
       "timezone": "browser",
-      "from": "now-12h",
+      "from": "now-6h",
       "to": "now",
       "autoRefresh": "",
       "autoRefreshIntervals": [
@@ -347,10 +304,10 @@
         "spec": {
           "name": "run_id",
           "current": {
-            "text": "122",
-            "value": "122"
+            "text": "1",
+            "value": "1"
           },
-          "label": "Run ID",
+          "label": "Run ID Selection",
           "hide": "dontHide",
           "refresh": "onDashboardLoad",
           "skipUrlSync": false,
@@ -359,7 +316,7 @@
             "group": "grafana-postgresql-datasource",
             "version": "v0",
             "datasource": {
-              "name": "PostgreSQL"
+              "name": "PCC52D03280B7034C"
             },
             "spec": {
               "dataset": "iot_db",
@@ -369,9 +326,9 @@
                 "textField": "run_id",
                 "valueField": "run_id"
               },
-              "query": "SELECT DISTINCT run_id FROM iot_control.pipeline_runs ORDER BY run_id DESC;",
+              "query": "SELECT DISTINCT run_id FROM iot_control.pipeline_runs ORDER BY run_id DESC ",
               "rawQuery": true,
-              "rawSql": "SELECT DISTINCT run_id FROM iot_control.pipeline_runs ORDER BY run_id DESC;",
+              "rawSql": "SELECT DISTINCT run_id FROM iot_control.pipeline_runs ORDER BY run_id DESC ",
               "refId": "SQLVariableQueryEditor-VariableQuery",
               "sql": {
                 "columns": [
@@ -395,7 +352,7 @@
           "regex": "",
           "regexApplyTo": "value",
           "sort": "disabled",
-          "definition": "SELECT DISTINCT run_id FROM iot_control.pipeline_runs ORDER BY run_id DESC;",
+          "definition": "SELECT DISTINCT run_id FROM iot_control.pipeline_runs ",
           "options": [],
           "multi": false,
           "includeAll": false,
