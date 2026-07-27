@@ -17,7 +17,7 @@ DB_CONFIG = {
     "password": os.getenv("POSTGRES_PASSWORD")
 }
 
-# 1. Initialize Industrial Connection Pool
+
 try:
     # 1 min connection, 20 max to handle high-concurrency sensor bursts
     db_pool = psycopg2.pool.ThreadedConnectionPool(1, 20, **DB_CONFIG)
