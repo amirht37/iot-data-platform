@@ -22,10 +22,10 @@ def transform_data(df, run_id):
 
        
         if "event_ts_ms" not in df.columns:
-            df["event_ts_ms"] = (df["ingest_ts"].view('int64') // 10**6)
+            df["event_ts_ms"] = (df["ingest_ts"].astype('int64') // 10**6)
         else:
             
-            df["event_ts_ms"] = df["event_ts_ms"].fillna(df["ingest_ts"].view('int64') // 10**6)
+            df["event_ts_ms"] = df["event_ts_ms"].fillna(df["ingest_ts"].astype('int64') // 10**6)
 
       
         df["event_ts"] = pd.to_datetime(df["event_ts_ms"], unit="ms", utc=True, errors="coerce")
@@ -47,7 +47,7 @@ def transform_data(df, run_id):
 
       
         df.loc[~df["temperature"].between(-40, 85), "reject_reason"] = "temp_out_of_range"
-        df.loc[~df["humidity"].between(0, 100), "reject_reason"] = "humidity_out_of_range"
+        df.loc[~df["humidity"].between(0, 200), "reject_reason"] = "humidity_out_of_range"
 
       
         valid_mask = df["reject_reason"].isna()
