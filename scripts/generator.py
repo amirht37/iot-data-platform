@@ -1,14 +1,11 @@
 import time
 import random
-import requests
 import json
-import threading
 import sys
 
-TARGET_URL = "http://127.0.0.1:5001/ingest"
+
 
 def run_isolated_sensor_node(sensor_id):
-    """Simulates a completely independent physical Raspberry Pi Pico hardware node"""
     node_tag = f"📡 [Pico-00{sensor_id}]"
     print(f"{node_tag} Thread initialized. Handshake loop active...", file=sys.stderr)
     
@@ -65,44 +62,5 @@ def run_isolated_sensor_node(sensor_id):
                 "event_ts_ms": current_epoch_ms
             }
             
-        try:
-            headers = {'Content-Type': 'application/json'}
-            response = requests.post(TARGET_URL, data=json.dumps(payload), headers=headers, timeout=2)
-            print(f"{node_tag} Transmitted frame #{packet_counter} -> HTTP {response.status_code} | Server Msg: {response.json().get('status')}")
-            
-        except requests.exceptions.RequestException as e:
-            print(f"⚠️ {node_tag} Transmission blocked: {str(e)[:60]}")
-            
-        time.sleep(random.uniform(0.5, 1.5))
+        print(payload)
 
-def launch_concurrency_refinery():
-    print("================================================================")
-    print("🔥 LAUNCHING HIGH-CONCURRENCY TELEMETRY STRESS TEST (v3.0.0)")
-    print("🔥 TARGET ARCHITECTURE: 5 PARALLEL HARDWARE EDGES OVER PORT 5001")
-    print("================================================================")
-    
-    sensor_nodes = [1, 2, 3, 4, 5]
-    thread_pool = []
-    
-    for node_id in sensor_nodes:
-        worker_thread = threading.Thread(
-            target=run_isolated_sensor_node, 
-            args=(node_id,), 
-            name=f"PicoThread-{node_id}"
-        )
-        worker_thread.daemon = True
-        thread_pool.append(worker_thread)
-        worker_thread.start()
-        
-    print(f"✅ All {len(thread_pool)} hardware nodes online.")
-    print("================================================================")
-    
-    try:
-        while True:
-            time.sleep(1)
-    except KeyboardInterrupt:
-        print("\n🛑 TERMINATION SIGNAL CAPTURED. Shutting down telemetry fleet cleanly.")
-        print("================================================================")
-
-if __name__ == "__main__":
-    launch_concurrency_refinery()
